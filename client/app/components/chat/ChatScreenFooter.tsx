@@ -15,13 +15,15 @@ interface ChatInputProps {
   value?: string;
   onChangeText?: (text: string) => void;
   invalid?: boolean;
-  onSend?: () => void;
+  isConnected: boolean;
+  onSend?: () => void; 
 }
 
 export const ChatScreenFooter: React.FC<ChatInputProps> = ({
   value,
   onChangeText,
   onSend,
+  isConnected,    
 }) => {
   return (
     <View style={styles.container}>
@@ -34,7 +36,7 @@ export const ChatScreenFooter: React.FC<ChatInputProps> = ({
         </TouchableOpacity> */}
       </View>
       <TextInput
-        placeholder="Say Something..."
+        placeholder={isConnected ? "Message..." : "Connecting..."}
         multiline
         value={value}
         onChangeText={onChangeText}
@@ -42,7 +44,11 @@ export const ChatScreenFooter: React.FC<ChatInputProps> = ({
         style={styles.messageInput}
       />
       <View style={styles.sendButtonContainer}>
-        <ChatSendButton onPress={onSend} />
+        <ChatSendButton 
+          onPress={onSend} 
+          disabled={!isConnected} 
+          color={isConnected ? '#007bff' : 'grey'} 
+      />
       </View>
     </View>
   );
